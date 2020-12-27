@@ -127,12 +127,14 @@ class Keyboard:
         #pyautogui.keyUp(char)
 
     def hold_key(self, char):
+        pass
         #if char not in pyautogui.KEYBOARD_KEYS:
         #    raise Exception(f"{char} is not a valid key to press")
 
         #pyautogui.keyDown(char)
 
     def release_key(self, char):
+        pass
         #if char not in pyautogui.KEYBOARD_KEYS:
         #    raise Exception(f"{char} is not a valid key to press")
 

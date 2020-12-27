@@ -7,7 +7,7 @@ from modules.module_input import st_function as st_input
 def todo():
     st.title("🚧 WIP 🚧")
 
-st.set_page_config(page_title='TFG - Ricardo S.', page_icon = "🐒", initial_sidebar_state = 'auto')
+st.set_page_config(page_title='TFG - Ricardo S.', page_icon = "🤖", initial_sidebar_state = 'auto')
 
 st.sidebar.title("Contramedidas para técnicas de detección de bots en RRSS.")
 st.sidebar.text("TFG GIC UAH - Ricardo S.\nTutor: Manuel Sanchez Rubio")
@@ -30,7 +30,7 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
-modules = {'0- Introduccion' : st_intro,
+modules = {'0- Introduccion 🤖' : st_intro,
             '1- Input 🖐️': st_input,
             '2- Fingerprinting 🔍': todo,
             '3- Generacion de texto 📖': todo, 

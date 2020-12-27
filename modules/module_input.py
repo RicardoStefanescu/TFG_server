@@ -16,7 +16,7 @@ from include.keyboard import Keyboard
 from include.keyboard_layouts import us_layout
 
 def st_function():
-    mouse = Mouse()
+    mouse = Mouse((3840, 2160))
     keyboard = Keyboard(us_layout, 123123)
 
     st.title("1- Generacion de Input")

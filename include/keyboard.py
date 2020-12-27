@@ -2,11 +2,11 @@ import time
 import string
 
 import numpy as np
-import pyautogui
-pyautogui.MINIMUM_DURATION = 0  # Default: 0.1
-pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
-pyautogui.PAUSE = 0  #
-pyautogui.FAILSAFE = True  # Set to false in real world
+#import pyautogui
+#pyautogui.MINIMUM_DURATION = 0  # Default: 0.1
+#pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
+#pyautogui.PAUSE = 0  #
+#pyautogui.FAILSAFE = True  # Set to false in real world
 
 class Keyboard:
     def __init__(self, layout, person_seed):
@@ -122,21 +122,21 @@ class Keyboard:
         if char not in pyautogui.KEYBOARD_KEYS:
             raise Exception(f"{char} is not a valid key to press")
 
-        pyautogui.keyDown(char)
+        #pyautogui.keyDown(char)
         time.sleep(delay)
-        pyautogui.keyUp(char)
+        #pyautogui.keyUp(char)
 
     def hold_key(self, char):
-        if char not in pyautogui.KEYBOARD_KEYS:
-            raise Exception(f"{char} is not a valid key to press")
+        #if char not in pyautogui.KEYBOARD_KEYS:
+        #    raise Exception(f"{char} is not a valid key to press")
 
-        pyautogui.keyDown(char)
+        #pyautogui.keyDown(char)
 
     def release_key(self, char):
-        if char not in pyautogui.KEYBOARD_KEYS:
-            raise Exception(f"{char} is not a valid key to press")
+        #if char not in pyautogui.KEYBOARD_KEYS:
+        #    raise Exception(f"{char} is not a valid key to press")
 
-        pyautogui.keyUp(char)
+        #pyautogui.keyUp(char)
 
     def char_to_key(self, char):
         if char == ' ':

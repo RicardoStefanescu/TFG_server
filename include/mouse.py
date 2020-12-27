@@ -1,23 +1,23 @@
 import numpy as np
-import pyautogui
+#import pyautogui
 import time
-pyautogui.MINIMUM_DURATION = 0  # Default: 0.1
-pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
-pyautogui.PAUSE = 0  #
-pyautogui.FAILSAFE = True  # Set to false in real world
+#pyautogui.MINIMUM_DURATION = 0  # Default: 0.1
+#pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
+#pyautogui.PAUSE = 0  #
+#pyautogui.FAILSAFE = True  # Set to false in real world
 
 
 class Mouse:
-    def __init__(self, screen_size=None):
+    def __init__(self, screen_size):
         self._nervousness = 0.5
         self._control = 0.5
-        self._s_width, self._s_height = pyautogui.size() if screen_size is None else screen_size
+        self._s_width, self._s_height = screen_size
 
-    def left_click(self):
-        pyautogui.click()
+    #def left_click(self):
+    #    pyautogui.click()
 
-    def right_click(self):
-        pyautogui.click(pyautogui.RIGHT)
+    #def right_click(self):
+    #    pyautogui.click(pyautogui.RIGHT)
 
     def move_to(self, p_destination, velocity=1, max_deviation=0.05):
         '''
@@ -25,7 +25,7 @@ class Mouse:
         velocity : pixels per second
         '''
         t_d = 0.001
-        p_origin = pyautogui.position()
+        #p_origin = pyautogui.position()
 
         # Normalize values to [0:1)
         x_o = p_origin[0]/self._s_width
@@ -48,7 +48,7 @@ class Mouse:
         # Move
         for p in points:
             time.sleep(t_d)
-            pyautogui.moveTo(p[0], p[1])
+            #pyautogui.moveTo(p[0], p[1])
 
     def chain_clicks(self, destinations, randomize=False):
         if randomize:

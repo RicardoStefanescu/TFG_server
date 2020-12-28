@@ -80,7 +80,7 @@ class Mouse:
         if linear_progression:
             T = np.array(range(0, n_steps)) / n_steps
         else:
-            T = np.sort(np.random.triangular(0.0, np.random.uniform(0.7,1.), 1.0, steps))
+            T = np.sort(np.random.triangular(0.0, np.random.uniform(0.9,1.), 1.0, steps))
             T = np.insert(T, 0, 0, axis=0)
             T = np.insert(T, len(T), 1, axis=0)
 

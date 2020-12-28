@@ -28,8 +28,6 @@ def st_function():
     Estas cuentas fueron inhabilitadas por ir contra su política de manipulación de la plataforma *[2]*,
     ya que **constituían una acción coordinada para modificar la opinión pública**.  
 
-    // Talk about twitter measures
-
     Mientras que **nuestro bot** que comenta monitos **no pretende modificar la opinión de nuestros seguidores**, 
     **las medidas** para detección de bots **complican considerablemente el desarrollo de bots benignos**.
     '''

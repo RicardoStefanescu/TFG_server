@@ -132,9 +132,6 @@ def st_function():
         st.markdown("##### Estas animaciones no representan todos los puntos que genera nuestro sistema, son solo ilustrativas")
         # Animacion linea recta
         st.subheader("Movimiento en linea recta")
-        parrafo_linea_recta ='''
-        Como podemos ver, una linea recta no es la forma optima, puesto que es obviame
-        '''
         # Calculate straight line
         p = abs(dest_y-origin_y)/abs(dest_x-origin_x)
         mult_x = np.sign(dest_x-origin_x)
@@ -147,6 +144,18 @@ def st_function():
         
         fname = ''.join([choice(ascii_letters) for _ in range(7)])
         show_animation(points, fname)
+
+        parrafo_linea_recta ='''
+        Como podemos ver una línea recta perfecta no engaña a nadie, vamos a ver que podemos mejorar.  
+        Vamos a generar una trayectoria con la fórmula cúbica de las curvas de bézier,
+        los dos puntos de anclaje son aleatorios, y están delimitados por la desviación máxima.
+
+        Una curva de bezier esta dada por la siguiente formula:
+        '''
+        st.markdown(parrafo_linea_recta)
+        st.latex(r'''
+        \mathbf{B}(t)=\mathbf{P}_0(1-t)^3+3\mathbf{P}_1t(1-t)^2+3\mathbf{P}_2t^2(1-t)+\mathbf{P}_3t^3  ,  t \in [0,1].
+        ''')
 
         # Animacion curva
         curve_seed = np.random.randint(0,2**32-1)
@@ -164,6 +173,24 @@ def st_function():
         fname = ''.join([choice(ascii_letters) for _ in range(7)])
         show_animation(points, fname)
 
+        parrafo_curva ='''
+        Mientras que la curva es una gran mejora, esta trayectoria **mantiene la misma velocidad y carece de errores**. 
+        Para mejorar el diseño, en vez de tomar una serie de puntos igualmente espaciados en la curva, 
+        **sacaremos puntos de una distribución triangular aleatoria** *[8]*, 
+        por lo que habra más puntos al llegar a nuestro objetivo, 
+        **imitando el el aceleramiento inicial y el ralentizamiento al acabar el movimiento** *[9]*.
+
+        La distribucion aleatoria esta dada por la siguiente formula:
+        '''
+        st.markdown(parrafo_curva)
+        st.latex(r'''f(x|a,b,c)= \begin{cases}
+            \frac{2(x-a)}{(b-a)(c-a)} & \text{para } a \le x < c, \\[4pt]
+            \frac{2}{b-a}             & \text{para } x = c, \\[4pt]
+            \frac{2(b-x)}{(b-a)(b-c)} & \text{para } c < x \le b, \\[4pt]
+            0                         & \text{para otros casos}
+            \end{cases}
+        ''')
+
         # Animacion curva
         st.subheader("Movimiento en curva con cambio de velocidad y errores de sensor")
         np.random.seed(curve_seed)
@@ -176,13 +203,24 @@ def st_function():
         fname = ''.join([choice(ascii_letters) for _ in range(7)])
         show_animation(points, fname)
 
+        parrafo_curva_2 ='''
+        Acabamos de conseguir un movimiento con cambios de velocidad, y errores en el sensor. 
+        El siguiente paso es añadir pequeñas desviaciones.
+        # WIP
+        '''
+        st.markdown(parrafo_curva_2)
+
     st.markdown('---')
     citations = {
         1:"https://oldschool.runescape.wiki/w/Botting",
         2:"https://secure.runescape.com/m=forum/forums?317,318,513,66181144",
         3:"https://github.com/xvol/bezmouse",
         4:"https://en.wikipedia.org/wiki/Telegraph_key#%22Fist%22",
-        5:"https://www.tesisenred.net/bitstream/handle/10803/461468/DorcaJosaAleix-Thesis.pdf#section.2.2"
+        5:"https://www.tesisenred.net/bitstream/handle/10803/461468/DorcaJosaAleix-Thesis.pdf#section.2.2",
+        6:"https://www.researchgate.net/publication/336270420_A_Deep_Learning_Approach_to_Web_Bot_Detection_Using_Mouse_Behavioral_Biometrics",
+        7:"https://es.wikipedia.org/wiki/Curva_de_B%C3%A9zier",
+        8:"https://es.wikipedia.org/wiki/Distribuci%C3%B3n_triangular",
+        9:"https://arxiv.org/pdf/2005.00890.pdf"
     }
 
     footer = ""

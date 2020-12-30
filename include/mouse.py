@@ -97,9 +97,15 @@ class Mouse:
 
         return np.array(points)
 
+    '''
     def _add_noise(self, points, ammount, max_deviation):
+        # Calcular la cantidad de 
         N = len(points)
         n_points = int(N * ammount)
+        if n_points <= 1:
+            return points
+
+        n_points = n_points - 1 if n_points % 2 == 1 else n_points
         if n_points % 2 == 1:
             n_points -= 1
         if n_points == 0:
@@ -155,3 +161,4 @@ class Mouse:
         #points[i] += noise_inc_x
 
         return points
+    '''

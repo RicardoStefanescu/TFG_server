@@ -2,6 +2,7 @@ import streamlit as st
 
 from modules.module_intro import st_function as st_intro
 from modules.module_input import st_function as st_input
+from modules.module_imggen import st_function as st_imggen
 
 
 def todo():
@@ -33,8 +34,8 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 modules = {'0- Introduccion 🤖' : st_intro,
             '1- Input 🖐️': st_input,
             '2- Fingerprinting 🔍': todo,
-            '3- Generacion de texto 📖': todo, 
-            '4- Generacion de imagenes 🖼️': todo, 
+            '3- Generacion de imagenes 🖼️': st_imggen, 
+            '4- Generacion de texto 📖': todo, 
             '5- Reaccion a texto 🤔': todo}
 
 selection = st.sidebar.selectbox("Seccion", list(modules.keys()))

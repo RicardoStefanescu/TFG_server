@@ -3,3 +3,8 @@ numpy
 pandas
 matplotlib
 pyautogui
+
+cv2
+imageio
+face_recognition
+torch

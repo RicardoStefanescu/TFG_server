@@ -120,9 +120,6 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
         crop_img = imageio.imread(img_path)
         crop_img = resize(crop_img, (256, 256)).astype('float32')[..., :3]
     else:
-        target_img = imageio.imread(img_path)
-        target_img = resize(target_img, target_img.shape[:2]).astype('float32')[..., :3]
-
         y_0, x_1, y_1, x_0 = face_location
 
         target_img_cv2 = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)

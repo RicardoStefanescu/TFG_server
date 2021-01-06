@@ -98,7 +98,7 @@ def st_function():
 
     with st.spinner("Calculando segmentacion"):
         seg_source_path = visualize_segmentation(source_path)
-        seg_target_path = visualize_segmentation(target_path, face_location=all_faces[i][0])
+        seg_target_path = visualize_segmentation(target_path, face_location=all_faces[i][1])
 
     st.image([Image.open(seg_source_path), Image.open(seg_target_path)], ["Cara del bot segmentada", f"Cara {i} segmentada"])
 

@@ -124,7 +124,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
         target_img = resize(target_img, target_img.shape[:2]).astype('float32')[..., :3]
 
         y_0, x_1, y_1, x_0 = face_location
-        
+
         crop_img = target_img_cv2[y_0:y_1,x_0:x_1]
         crop_img = resize(crop_img, (256, 256))[..., :3]
 
@@ -163,7 +163,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
         ax[0].axis('off')
         ax[1].axis('off')
         fname = ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg'
-        plt.savefig(fname, 80)
+        plt.savefig(fname, dpi=80)
 
         return fname
 

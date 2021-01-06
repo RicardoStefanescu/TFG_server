@@ -82,8 +82,8 @@ def st_function():
             y_0, x_1, y_1, x_0 = face[1]
 
             cv2.rectangle(display_target, (x_0, y_0), (x_1, y_1), (0, 255, 60), 10)
-            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 60), 4)
-            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 60), 4)
+            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 4)
+            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 4)
 
         st.image(display_target, caption="Imagen objetivo", use_column_width=True)
 

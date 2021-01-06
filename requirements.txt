@@ -32,3 +32,9 @@ toolz
 torch
 torchvision
 tqdm
+
+
+# Reaction
+textblob
+gensim
+nltk

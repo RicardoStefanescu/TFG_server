@@ -109,5 +109,5 @@ def st_function():
     with st.spinner("Calculando transformacion"):
         result_img = replace_face(source_path, target_path, all_faces[i][1], gpu=False)
     
-    result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
-    st.image(result_img, "Imagen resultante", channels="BGR", use_column_width=True)
+    #result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+    st.image(result_img, "Imagen resultante", channels="RGB", use_column_width=True)

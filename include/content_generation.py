@@ -32,6 +32,8 @@ def find_similar_faces(mugshot_path, target_img_path):
     for (y_0, x_1, y_1, x_0) in face_locations:
         height = abs(y_0 - y_1) 
         width = abs(x_0 - x_1)
+        if height != width:
+            continue
 
         x_0 -= width//2
         y_0 -= height//2
@@ -160,7 +162,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
         #ax[1].legend(handles=patches)
         ax[0].axis('off')
         ax[1].axis('off')
-        fname = ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg'
+        fname = "/tmp/" + ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg'
         plt.savefig(fname, dpi=80)
 
         return fname

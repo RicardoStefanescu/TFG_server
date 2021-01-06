@@ -113,7 +113,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
     _, network = load_checkpoints(config=os.path.join(lib_dir, "resources/motion_co_seg/config/vox-256-sem-10segments.yaml"), 
                                                checkpoint=os.path.join(lib_dir, "resources/models/vox-10segments.pth.tar"),
                                                blend_scale=1,
-                                               cpu=not gpu)
+                                               cpu=True)
 
     # Load picture
     if face_location is None:
@@ -124,9 +124,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
         target_img = resize(target_img, target_img.shape[:2]).astype('float32')[..., :3]
 
         y_0, x_1, y_1, x_0 = face_location
-        w = abs(x_1-x_0)
-        h = abs(y_1-y_0)
-
+        
         crop_img = target_img_cv2[y_0:y_1,x_0:x_1]
         crop_img = resize(crop_img, (256, 256))[..., :3]
 

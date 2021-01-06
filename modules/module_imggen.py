@@ -37,16 +37,15 @@ def st_function():
     parrafo_intro = '''
     Una de las funcionalidades mas utiles que le podemos dar a nuestros bots \
     para que pasen desapercibidos, es la capacidad de generar contenido que parezca\
-    humano. Hemos implementado una funcionalidad para que nuestros bots puedan subir\
-    fotos normales donde salen ellos. Utiliza las tecnicas descritas por Aliaksandr Siarohin [1]\
+    humano. Hemos implementado una funcionalidad para que puedan subir\
+    fotos donde salen ellos. Utiliza las tecnicas descritas por Aliaksandr Siarohin [1]\
     para segmentar las caras en zonas, y despues sustituye las partes.\
     
-    Puedes subir tu propia foto, o jugar con las por defecto.
     '''
     st.markdown(parrafo_intro)
 
     # Ask for images
-    st.markdown("#### Sube una foto de una cara, y una foto de un grupo")
+    st.markdown("#### Usa las fotos por defecto, o sube fotos tu")
     source_img_b = st.file_uploader("Cara a usar", ['png', 'jpg', 'jpeg'])
     target_img_b = st.file_uploader("Imagen objetivo", ['png', 'jpg', 'jpeg'])
 
@@ -71,7 +70,7 @@ def st_function():
         target_path = os.path.join(base_path, ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg')
         cv2.imwrite(target_path, target_img_arr)
 
-    st.image(source_img_arr, caption="Tu careto", use_column_width=True)
+    st.image(source_img_arr, caption="Cara de nuestro bot", use_column_width=True)
 
     with st.spinner("Calculando la similitud de las caras"):
         all_faces = find_similar_faces(source_path, target_path)
@@ -81,9 +80,9 @@ def st_function():
             sim = face[0]
             y_0, x_1, y_1, x_0 = face[1]
 
-            cv2.rectangle(display_target, (x_0, y_0), (x_1, y_1), (0, 255, 60), 10)
-            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 4)
-            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 4)
+            cv2.rectangle(display_target, (x_0, y_0), (x_1, y_1), (255, 0, 0), 10)
+            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 8)
+            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 8)
 
         st.image(display_target, caption="Imagen objetivo", use_column_width=True)
 
@@ -103,13 +102,12 @@ def st_function():
     st.image([Image.open(seg_source_path), Image.open(seg_target_path)], ["Cara del bot segmentada", f"Cara {i} segmentada"])
 
     parrafo_result = '''
-    Por ultimo, movemos las zonas de la cara de nuestro bot a la cara final.
+    #### Por ultimo, movemos las zonas de la cara de nuestro bot a la cara final.
     '''
     st.markdown(parrafo_result)
 
     with st.spinner("Calculando transformacion"):
         result_img = replace_face(source_path, target_path, all_faces[i][1], gpu=False)
     
-    #cv2.cvtColor(, cv2.COLOR_BGR2RGB)
-    st.subheader("Resultado")
+    result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
     st.image(result_img, "Imagen resultante", channels="BGR", use_column_width=True)

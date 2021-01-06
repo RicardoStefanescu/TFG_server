@@ -33,7 +33,7 @@ default_group_path = "resources/default_group.jpg"
 
 def st_function():
     st.title("Generacion de imagenes")
-    st.header("Mystique de X-Men")
+    st.header("Auto edicion")
     parrafo_intro = '''
     Una de las funcionalidades mas utiles que le podemos dar a nuestros bots \
     para que pasen desapercibidos, es la capacidad de generar contenido que parezca\
@@ -82,8 +82,8 @@ def st_function():
             y_0, x_1, y_1, x_0 = face[1]
 
             cv2.rectangle(display_target, (x_0, y_0), (x_1, y_1), (0, 255, 60), 10)
-            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 4)
-            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 4)
+            cv2.putText(display_target, f'Cara {i}', (x_0, (y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 4)
+            cv2.putText(display_target, 'Similitud: {:.2f}'.format(sim), (x_0, 2*(y_1 - y_0)//8+y_1), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 4)
 
         st.image(display_target, caption="Imagen objetivo", use_column_width=True)
 
@@ -98,7 +98,7 @@ def st_function():
 
     with st.spinner("Calculando segmentacion"):
         seg_source_path = visualize_segmentation(source_path)
-        seg_target_path = visualize_segmentation(target_path, face_location=all_faces[i])
+        seg_target_path = visualize_segmentation(target_path, face_location=all_faces[i][0])
 
     st.image([Image.open(seg_source_path), Image.open(seg_target_path)], ["Cara del bot segmentada", f"Cara {i} segmentada"])
 

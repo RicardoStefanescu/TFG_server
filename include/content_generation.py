@@ -125,6 +125,7 @@ def visualize_segmentation(img_path, face_location=None, supervised=False, hard=
 
         y_0, x_1, y_1, x_0 = face_location
 
+        target_img_cv2 = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
         crop_img = target_img_cv2[y_0:y_1,x_0:x_1]
         crop_img = resize(crop_img, (256, 256))[..., :3]
 

@@ -1,21 +1,10 @@
 import streamlit as st
 
-import numpy as np
 import pandas as pd
 from PIL import Image
 
 from include.reaction import estimate_reaction, Interest
 
-
-interests = [
-    Interest("mario", 0.9, 0.9),
-    Interest("firefighter", 0.9, 0.9),
-    Interest("fire", 0.9, 0.1),
-    Interest("car",0.6, 0.8),
-    Interest("trucks",0.6,0.7),
-    Interest("dogs",0.9,0),
-    Interest("ducks",0.9,0.1)
-]
 
 def st_function():
     st.title("Reaccion a contenido")
@@ -64,6 +53,15 @@ def st_function():
     st.markdown(parrafo_interes)
 
     # Intereses
+    interests = [
+        Interest("mario", 0.9, 0.9),
+        Interest("firefighter", 0.9, 0.9),
+        Interest("fire", 0.9, 0.1),
+        Interest("car",0.6, 0.8),
+        Interest("trucks",0.6,0.7),
+        Interest("dogs",0.9,0),
+        Interest("ducks",0.9,0.1)
+    ]
     ints = []
     for i in interests:
         ints.append([', '.join(i.get_keywords()), i.get_strenght(), i.get_polarity()])

@@ -1,6 +1,8 @@
 import warnings
 warnings.filterwarnings("ignore")
 import os
+from random import choice
+from string import ascii_letters
 
 import numpy as np
 import cv2
@@ -11,6 +13,11 @@ import torch
 import torch.nn.functional as F
 
 import face_recognition
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+import torch
 
 from .resources.motion_co_seg.part_swap import load_checkpoints, face_swap
 
@@ -94,6 +101,73 @@ def replace_face(mugshot_path, target_img_path, face_location, gpu=False):
     result_image[y_0:y_1, x_0:x_1] = mask_image
 
     return result_image
+
+def visualize_segmentation(img_path, face_location=None, supervised=False, hard=True, colormap='gist_rainbow'):
+    lib_dir = os.path.dirname(os.path.realpath(__file__))
+    try:
+        assert os.path.exists(os.path.join(lib_dir, "resources/models/vox-10segments.pth.tar"))
+    except Exception as e:
+        print(f"{e}\n\n >> Download the models before using this functionality, you can do so by running: natural_bot_tk.download_models()")
+    
+    # Load modules
+    _, network = load_checkpoints(config=os.path.join(lib_dir, "resources/motion_co_seg/config/vox-256-sem-10segments.yaml"), 
+                                               checkpoint=os.path.join(lib_dir, "resources/models/vox-10segments.pth.tar"),
+                                               blend_scale=1,
+                                               cpu=not gpu)
+
+    # Load picture
+    if face_location is None:
+        crop_img = imageio.imread(img_path)
+        crop_img = resize(crop_img, (256, 256)).astype('float32')[..., :3]
+    else:
+        target_img = imageio.imread(img_path)
+        target_img = resize(target_img, target_img.shape[:2]).astype('float32')[..., :3]
+
+        y_0, x_1, y_1, x_0 = face_location
+        w = abs(x_1-x_0)
+        h = abs(y_1-y_0)
+
+        crop_img = target_img_cv2[y_0:y_1,x_0:x_1]
+        crop_img = resize(crop_img, (256, 256))[..., :3]
+
+    with torch.no_grad():
+        inp = torch.tensor(crop_img[np.newaxis].astype(np.float32)).permute(0, 3, 1, 2)#.cuda()
+        if supervised:
+            inp = F.interpolate(inp, size=(512, 512))
+            inp = (inp - network.mean) / network.std
+            mask = torch.softmax(network(inp)[0], dim=1)
+            mask = F.interpolate(mask, size=crop_img.shape[:2])
+        else:
+            mask = network(inp)['segmentation']
+            mask = F.interpolate(mask, size=crop_img.shape[:2], mode='bilinear')
+        
+        if hard:
+            mask = (torch.max(mask, dim=1, keepdim=True)[0] == mask).float()
+        
+        colormap = plt.get_cmap(colormap)
+        num_segments = mask.shape[1]
+        mask = mask.squeeze(0).permute(1, 2, 0).cpu().numpy()
+        color_mask = 0
+        patches = []
+        for i in range(num_segments):
+            if i != 0:
+                color = np.array(colormap((i - 1) / (num_segments - 1)))[:3]
+            else:
+                color = np.array((0, 0, 0))
+            patches.append(mpatches.Patch(color=color, label=str(i)))
+            color_mask += mask[..., i:(i+1)] * color.reshape(1, 1, 3)
+        
+        _, ax = plt.subplots(1, 2, figsize=(12,6))
+
+        ax[0].imshow(color_mask)
+        ax[1].imshow(0.3 * crop_img + 0.7 * color_mask)
+        #ax[1].legend(handles=patches)
+        ax[0].axis('off')
+        ax[1].axis('off')
+        fname = ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg'
+        plt.savefig(fname, 80)
+
+        return fname
 
 
 def replace_best_face(mugshot_path, target_img_path, threshold=0.9, gpu=False):

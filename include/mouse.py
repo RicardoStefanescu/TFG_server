@@ -96,69 +96,75 @@ class Mouse:
             points.append(p)
 
         return np.array(points)
+    
+    def add_noise(self, points, noisiness, max_deviation):
+        '''
+        `points` - The where we add noise \n
+        `noisiness` - Value [0-1) that determines how much noise we add \n
+        `max_deviation` - Max accepted deviation
+        '''
+        assert 1 > noisiness and noisiness >= 0
+        assert 1 >= max_deviation and max_deviation > 0
+        assert len(points) != 0
 
-    '''
-    def _add_noise(self, points, ammount, max_deviation):
-        # Calcular la cantidad de 
-        N = len(points)
-        n_points = int(N * ammount)
-        if n_points <= 1:
+        if noisiness == 0:
             return points
 
-        n_points = n_points - 1 if n_points % 2 == 1 else n_points
-        if n_points % 2 == 1:
-            n_points -= 1
-        if n_points == 0:
-            return points
+        # Calculate N points that we will create
+        n_noisy_points = int(len(points) * noisiness)
+        
+        # Make it a pair number
+        n_noisy_points = n_noisy_points if n_noisy_points % 2 == 0 else n_noisy_points - 1
 
-        # Calculamos a que puntos queremos anadir ruido
-        i_noise = np.random.choice(range(N), n_points)
+        # Get a random set of points that we will add noise to
+        i_noisy_points = []
+        for _ in range(n_noisy_points):
+            i = np.random.randint(1, len(points))
 
-        # Calculamos el ruido
-        noise_inc_x = np.random.uniform(size=n_points//2)
-        noise_inc_y = np.random.uniform(size=n_points//2)
-        noise_dec_x = np.random.uniform(size=n_points//2)
-        noise_dec_y = np.random.uniform(size=n_points//2)
+            # If we already took that index repeat
+            while i in i_noisy_points:
+                i = np.random.randint(1, len(points))
 
-        # Lo normalizamos
-        noise_inc_x /= np.sum(noise_inc_x)
-        noise_inc_y /= np.sum(noise_inc_y)
-        noise_dec_x /= np.sum(noise_dec_x)
-        noise_dec_y /= np.sum(noise_dec_y)
+            i_noisy_points.append(i)
 
-        # Convertimos el mayor valor a 1
-        noise_inc_x /= np.max(noise_inc_x)
-        noise_inc_y /= np.max(noise_inc_y)
-        noise_dec_x /= np.max(noise_dec_x)
-        noise_dec_y /= np.max(noise_dec_y)
+        # Calculate the vectors leading to those points
+        vectors = []
+        for i in i_noisy_points:
+            vectors.append(points[i] - points[i - 1])
+        vectors = np.array(vectors)
 
-        # Multiplicamos por la maxima desviacion
-        noise_inc_x *= max_deviation
-        noise_inc_y *= max_deviation
-        noise_dec_x *= max_deviation
-        noise_dec_y *= max_deviation
+        noise = np.zeros((len(points), 2))
+        # Choose pairs of vectors
+        for i, v_x in enumerate(np.split(vectors, 2)):
+            v_1 = v_x[0]
+            v_2 = v_x[1]
 
-        # Creamos los vectores de ruido
-        noise_x = np.concatenate((noise_inc_x, -noise_dec_x))
-        noise_y = np.concatenate((noise_inc_y, -noise_dec_y))
-        np.random.shuffle(noise_x)
-        np.random.shuffle(noise_y)
+            # Calculate max deviations
+            max_x_deviation = v_1[0] if v_1[0] >= v_2[0] else v_2[0]
+            max_y_deviation = v_1[1] if v_1[1] >= v_2[1] else v_2[1]
 
-        noise_points = np.column_stack((noise_x, noise_y))
+            max_x_deviation *= max_deviation
+            max_y_deviation *= max_deviation
 
-        assert len(noise_points) == n_points
+            # Calculate noise
+            n = np.empty(2)
+            n[0] = np.random.uniform(-1.0, 1.0) * max_x_deviation
+            n[1] = np.random.uniform(-1.0, 1.0) * max_y_deviation
 
-        noise_count = 0
-        noise_sum = np.array((0., 0.))
-        for i in range(N):
-            if i in i_noise:
-                noise_sum += noise_points[noise_count]
-                noise_count += 1
-            points[i] += noise_sum
+            # Add opposite noise to each
+            noise[i] += n
+            noise[i + len(vectors)//2] -= n
 
-        # A algunos puntos incrementamos y otros decrementamos
-        #i = np.random.choice(range(N), n_points)
-        #points[i] += noise_inc_x
+        new_points = []
+        # delete the first point 
+        new_points.append(points[0])
+        np.delete(points, 0)
+        np.delete(noise, 0)
 
-        return points
-    '''
+        # Recalculate points
+        for og_p, n in zip(points, noise):
+            noise_sum += n
+            new_p = og_p + noise_sum
+            new_points.append(new_p)
+
+        return np.array(new_points)

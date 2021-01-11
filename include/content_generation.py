@@ -19,13 +19,20 @@ import matplotlib.patches as mpatches
 
 import torch
 
+import streamlit as st
+
 from .resources.motion_co_seg.part_swap import load_checkpoints, face_swap
 
 
 def find_similar_faces(mugshot_path, target_img_path):
     # Find faces in target
-    target_img_cv2 = cv2.cvtColor(cv2.imread(target_img_path), cv2.COLOR_BGR2RGB)
+    #target_img_cv2 = cv2.cvtColor(cv2.imread(target_img_path), cv2.COLOR_BGR2RGB)
+    target_img_cv2 = cv2.imread(target_img_path)
     face_locations = face_recognition.face_locations(target_img_cv2, model="hog")
+    if not face_locations:
+        face_locations = face_recognition.face_locations(target_img_cv2, model="ccn")
+        if not face_locations:
+            return []
 
     # Make bounding face boxes slightly bigger
     fixed_faces = []

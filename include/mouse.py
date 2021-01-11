@@ -99,12 +99,11 @@ class Mouse:
     
     def add_noise(self, points, noisiness, max_deviation):
         '''
-        `points` - The where we add noise \n
-        `noisiness` - Value [0-1) that determines how much noise we add \n
-        `max_deviation` - Max accepted deviation
+        `points` - Puntos a los que anadir ruido \n
+        `noisiness` - Valor [0-1) que determina a que porcentaje de puntos anadir ruido \n
+        `max_deviation` - Desviacion maxima 
         '''
         assert 1 > noisiness and noisiness >= 0
-        assert 1 >= max_deviation and max_deviation > 0
         assert len(points) != 0
 
         if noisiness == 0:
@@ -133,36 +132,34 @@ class Mouse:
             vectors.append(points[i] - points[i - 1])
         vectors = np.array(vectors)
 
-        noise = np.zeros((len(points), 2))
         # Choose pairs of vectors
-        for i, v_x in enumerate(np.split(vectors, 2)):
-            v_1 = v_x[0]
-            v_2 = v_x[1]
-
+        vs_1, vs_2 = np.split(vectors, 2)
+        is_1, is_2 = np.split(np.array(i_noisy_points), 2)
+        noise = np.zeros((len(points), 2))
+        for i_1, i_2, v_1, v_2 in zip(is_1, is_2, vs_1, vs_2):
             # Calculate max deviations
-            max_x_deviation = v_1[0] if v_1[0] >= v_2[0] else v_2[0]
-            max_y_deviation = v_1[1] if v_1[1] >= v_2[1] else v_2[1]
+            max_x_deviation = abs(min(v_1[0], v_2[0]))
+            max_y_deviation = abs(min(v_1[1], v_2[1]))
 
             max_x_deviation *= max_deviation
             max_y_deviation *= max_deviation
 
             # Calculate noise
             n = np.empty(2)
-            n[0] = np.random.uniform(-1.0, 1.0) * max_x_deviation
-            n[1] = np.random.uniform(-1.0, 1.0) * max_y_deviation
+            n[0] = np.random.uniform(-max_x_deviation, max_x_deviation)
+            n[1] = np.random.uniform(-max_y_deviation, max_y_deviation)
 
             # Add opposite noise to each
-            noise[i] += n
-            noise[i + len(vectors)//2] -= n
+            noise[i_1] += n
+            noise[i_2] -= n
 
         new_points = []
+        noise_sum = np.zeros(2)
         # delete the first point 
         new_points.append(points[0])
-        np.delete(points, 0)
-        np.delete(noise, 0)
 
         # Recalculate points
-        for og_p, n in zip(points, noise):
+        for og_p, n in zip(points[1:], noise[1:]):
             noise_sum += n
             new_p = og_p + noise_sum
             new_points.append(new_p)

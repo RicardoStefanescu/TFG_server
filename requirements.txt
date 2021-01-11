@@ -33,6 +33,8 @@ torch
 torchvision
 tqdm
 
+# Text gen
+tensorflow
 
 # Reaction
 textblob

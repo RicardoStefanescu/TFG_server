@@ -3,7 +3,8 @@ import re
 
 from include.text_generation import GPT2
 
-model_path = "/home/workingman/Studies/TFG/3-ContentGeneration/TextGeneration/gpt-2-finetuning/models/simple_gen"
+#model_path = "/home/workingman/Studies/TFG/3-ContentGeneration/TextGeneration/gpt-2-finetuning/models/simple_gen"
+model_path = "/home/user/TFG_server/include/resources/models/gpt_simple_gen"
 
 def st_function(hide_text):
     prompt = st.text_input("Input: (Sustantivos en ingles separados por comas)")

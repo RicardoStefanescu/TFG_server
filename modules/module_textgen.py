@@ -75,6 +75,9 @@ def st_function(hide_text):
     parrafo_ejemplo = '''
     **Aqui puedes probar el sistema que genera texto natural dados unos temas.**
 
+    ** Usamos GPT-2 con 117 millones de parametros en un servidor de 5 euros, tarda mucho en 
+    generar texto...**
+
     A continuacion puedes introducir un input a nuestro sistema y ver su output.
     **El input debe ser en Ingles**, y estar formado por **palabras separadas por comas**.
     **La temperatura controla la aleatoriedad** de la salida de GPT-2.
@@ -100,8 +103,8 @@ def st_function(hide_text):
         La razon para esto es que el modelo de GPT-2 que usamos tiene 117 millones de 
         parametros (Es el mas pequeño!), y estoy ejecutando esta demo en un servidor 
         de 5 euros/mes.
-        Esto quiere decir que sacar una salida de GPT suele tardar entre un minuto y dos,
-        asi que rememora tu finde. :)
+        Esto quiere decir que sacar una salida de GPT puede tardar hasta 20 min...
+        Asi que rememora tu finde. :)
         '''
         st.text(parrafo_espera)
 
@@ -120,8 +123,7 @@ def st_function(hide_text):
         st.markdown("---")
         st.header("Souvenir")
         parrafo_fin ='''
-        Esta es la ultima demo del sistema, como veo que te lo has pasado bien jugeteando con los
-        modelos, aqui tienes un souvenir. Espero que te guste.
+        Como premio por aguantar todo este tiempo, aqui tienes un souvenir. Espero que te guste.
         '''
         st.markdown(parrafo_fin)
         tweet_img = get_img(output)

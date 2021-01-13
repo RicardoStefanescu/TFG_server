@@ -28,9 +28,9 @@ def find_similar_faces(mugshot_path, target_img_path):
     # Find faces in target
     #target_img_cv2 = cv2.cvtColor(cv2.imread(target_img_path), cv2.COLOR_BGR2RGB)
     target_img_cv2 = cv2.imread(target_img_path)
-    face_locations = face_recognition.face_locations(target_img_cv2, model="hog")
+    face_locations = face_recognition.face_locations(target_img_cv2, model="ccn")
     if not face_locations:
-        face_locations = face_recognition.face_locations(target_img_cv2, model="ccn")
+        face_locations = face_recognition.face_locations(target_img_cv2, model="hog")
         if not face_locations:
             return []
 
@@ -42,12 +42,15 @@ def find_similar_faces(mugshot_path, target_img_path):
         if height != width:
             continue
 
+        if not (x_0-width//2 >= 0 and x_1+width//2 < target_img_cv2.shape[1] and
+            y_0-height//2 >= 0 and y_1+height//2 < target_img_cv2.shape[0]):
+            continue
         x_0 -= width//2
         y_0 -= height//2
 
         x_1 += width//2
         y_1 += height//2
-        
+    
         fixed_faces += [[y_0,x_1,y_1,x_0]]
 
     # Get encoding of source img

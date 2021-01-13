@@ -31,6 +31,9 @@ hide_streamlit_style = """
                 padding: 5px;
                 top: 2px;
             }
+            p {
+                text-align: justify;
+            } 
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
@@ -47,7 +50,7 @@ modules = {'0- Introduccion 🤖' : st_intro,
 
 
 selection = st.sidebar.selectbox("Seccion", list(modules.keys()))
-hide_text = not st.sidebar.checkbox("Solo quiero jugar con las herramientas, no que me cuentes tu vida.")
+hide_text = st.sidebar.checkbox("Solo quiero jugar con las herramientas, no que me cuentes tu vida.")
 
 func = modules.get(selection)
 func(hide_text)

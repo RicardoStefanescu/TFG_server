@@ -6,7 +6,7 @@ from include.scheduling import calcular_tiempos, generate_scheduling_function, c
 
 def st_function(hide_text):
     st.title("Tiempos de activacion")
-    if hide_text:
+    if not hide_text:
         # Insomnia y bots
         st.header("Ritmos circadianos")
         parrafo_alicebob = '''

@@ -20,7 +20,7 @@ BG="resources/98desktop.png"
 
 def st_function(hide_text):
     st.title("1- Generacion de Input")
-    if hide_text:
+    if not hide_text:
         st.header("Runescape")
         parrafo_runescape = '''
         Runescape es un MMORPG [Juego de rol multijugador online] que **anima a sus usuarios a realizar tareas repetitivas** para conseguir recursos, 

@@ -4,12 +4,11 @@ from PIL import Image
 def st_function(hide_text):
     st.title("Introduccion")
 
-    if hide_text:
+    if not hide_text:
         st.header("2018")
         parrafo_2018 = '''
         En 2018 **decidí que quería hacer algo especial con mi cuenta de Instagram**,
         no soy fan de que haya fotos mias en internet, y me aburría publicar fotos y escribir comentarios en publicaciones.
-
         Eureka, pensé; “estudio GIC, **podría programar un bot que haga todas esas funciones**, y solo usar Instagram para cotillear las vidas de mis amigos”. 
         En un fin de semana **hice un pequeño bot con python y selenium** que comentaba "🐒🐒🐒" en las fotos de mis mejores amigos.
 

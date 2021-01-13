@@ -8,7 +8,7 @@ from include.reaction import estimate_reaction, Interest
 
 def st_function(hide_text):
     st.title("Reaccion a contenido")
-    if hide_text:
+    if not hide_text:
         # Ejemplo de mi sobrino
         st.header("El enano")
         parrafo_enano = '''

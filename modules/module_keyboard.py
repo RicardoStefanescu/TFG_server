@@ -18,7 +18,7 @@ from include.keyboard_layouts import us_layout
 
 def st_function(hide_text):
     st.title("1- Generacion de Input")
-    if hide_text:
+    if not hide_text:
         st.header("Telegrafistas")
         parrafo_telegraf = '''
         En la primera y segunda guerra mundial la mejor forma de comunicacion a largas distancias era el telegrafo.
@@ -70,15 +70,24 @@ def st_function(hide_text):
     seed = st.number_input("Semilla del puño del bot", 0, 2**32-1, 123123, 1)
     stress = st.slider("Estres", 0., 1., 0.2, 0.01)
 
-    keyboard = Keyboard(us_layout, seed)
-    #np.random.seed(seed)
-    keys = keyboard.generate_keys(text, stress)
-    #np.random.seed()
+    keys = get_keys(us_layout, seed, text, stress)
 
     st.subheader("Teclas y tiempos generados por nuestro sistema:")
     df = pd.DataFrame(
         keys,
         columns=("Tecla", "Mayus", "Tiempo entre teclas", "Tiempo presionada"))
+
+    # Change mayus to true false
+    df.loc[df.Mayus == "1", "Mayus"] = "True"
+    df.loc[df.Mayus == "0", "Mayus"] = "False"
+
+    # Apply style
+    df = df.style.background_gradient(cmap='YlOrRd',subset=['Tiempo presionada', "Tiempo entre teclas"])
+
+    # Transform backspaces to red
+    style_backspace = lambda val: "color: red" if val == 'backspace' else ""
+    df = df.applymap(style_backspace)
+
     st.table(df)
 
     parrafo_sistema_key_2 = '''
@@ -125,3 +134,8 @@ def st_function(hide_text):
         st.text(footer)
 
     st.markdown("#### ⬅️⬅️⬅️ Continua en la proxima seccion  ")
+
+@st.cache
+def get_keys(layout, seed, text, stress):
+    keyboard = Keyboard(us_layout, seed)
+    return keyboard.generate_keys(text, stress)

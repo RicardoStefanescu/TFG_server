@@ -79,6 +79,7 @@ def get_keywords(text):
     result = list(dict.fromkeys(result))
 
     return result
+
 def estimate_reaction(text, interest_list, debug=False, bayes=True):
     # Check if the text is within our interests
     text_keywords = get_keywords(text)

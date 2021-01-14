@@ -73,21 +73,33 @@ def st_function(hide_text):
 
     st.header("Ejemplo interactivo")
     parrafo_ejemplo = '''
-    **Aqui puedes probar el sistema que genera texto natural dados unos temas.**
+    **ESTE EJEMPLO ESTA DESACTIVADO**
 
-    ** Usamos GPT-2 con 117 millones de parametros en un servidor de 5 euros, tarda mucho en 
+    **Usamos GPT-2 con 117 millones de parametros en un servidor de 5 euros, no solo solia
+    tardar 20 minutos, sino que tambien hacia el servidor explotar.**
+
+    ##### Si quieres probarlo, puedes enviarme un mensaje.
+    '''
+    parrafo_old='''
+    **Usamos GPT-2 con 117 millones de parametros en un servidor de 5 euros, tarda mucho en 
     generar texto...**
+
+    **Aqui puedes probar el sistema que genera texto natural dados unos temas.**
 
     A continuacion puedes introducir un input a nuestro sistema y ver su output.
     **El input debe ser en Ingles**, y estar formado por **palabras separadas por comas**.
     **La temperatura controla la aleatoriedad** de la salida de GPT-2.
     '''
     st.markdown(parrafo_ejemplo)
-    prompt = st.text_input("Input", "bite, shiny, metal, buttocks").lower()
-    temp = st.slider("Temperatura", 0.01, 1.0, 1., step=0.01)
-    st.markdown("##### > A bajas temperaturas, el modelo suele pedir perdon (por alguna razon???)  ")
+    #prompt = st.text_input("Input", "bite, shiny, metal, buttocks").lower()
+    #temp = st.slider("Temperatura", 0.01, 1.0, 1., step=0.01)
+    #st.markdown("##### > A bajas temperaturas, el modelo suele pedir perdon (por alguna razon???)  ")
 
-    if not prompt:
+    if True:
+        st.subheader("Ejemplo desactivado")
+
+    elif not prompt:
+    #if not prompt:
         st.info("Escribe algunos sustantivos")
         st.stop()
 

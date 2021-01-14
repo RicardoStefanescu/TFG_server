@@ -3,6 +3,7 @@ import base64
 from string import ascii_letters
 from random import choice
 import os
+from datetime import datetime
 
 import streamlit as st
 
@@ -16,6 +17,7 @@ from PIL import Image
 from skimage.transform import resize
 import cv2
 
+from include.resources.tweet_image_generator.generate_tweet_image import gen
 from include.content_generation import find_similar_faces, replace_face, visualize_segmentation
 
 # Intro text
@@ -59,7 +61,7 @@ def st_function(hide_text):
 
         st.header("Sistema propuesto")
         st.subheader("Objetivo")
-        st.markdown("Sistema que anade a nuestro Bot a fotos de personas ajenas.")
+        st.markdown("Sistema que añade a nuestro Bot a fotos de personas ajenas.")
         st.subheader("Funcionamiento")
         parrafo_func = '''
         Nuestro sistema **toma una foto de perfil** (nos valen las generadas por StyleGAN2 *[2]*), \
@@ -168,10 +170,19 @@ def st_function(hide_text):
         with st.spinner("Calculando transformacion"):
             result_img = get_result(source_path, target_path, all_faces[i][1], gpu=False)
         
+        if correction:
+            result_img = cv2.cvtColor(np.float32(result_img), cv2.COLOR_BGR2RGB)
+        
         #result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
-        st.image(result_img, "Imagen resultante", channels="RGB" if correction else "BGR", use_column_width=True)
-        correction = st.checkbox("La imagen sale azul")
+        #st.image(result_img, "Imagen resultante", channels="RGB" if correction else "BGR", use_column_width=True)
 
+        st.markdown('---')
+        st.subheader("Resultado")
+
+        result_path = os.path.join(base_path, ''.join([choice(ascii_letters) for _ in range(7)]) + '.jpg')
+        cv2.imwrite(result_path, result_img*255)
+        tweet = get_img(source_path, result_path)
+        st.image(tweet, "Sugerencia de presentacion", use_column_width=True)
     
     st.markdown('---')
     if not hide_text:
@@ -196,3 +207,15 @@ def segment(path, face_location=None):
 @st.cache(suppress_st_warning=True)
 def get_result(source_path, target_path, face_location, gpu=False):
     return replace_face(source_path, target_path, face_location, gpu=False)
+
+
+@st.cache
+def get_img(profileImg, img):
+    date_format = "%I:%M %p · %d %b. %Y"
+    date = datetime.now().strftime(date_format)
+    name = "Hugh Jass"
+    username = "@totallynotabot"
+    text = "Adjunto una imagen con mis amigos. Soy capaz de disfrutar conversaciones complejas en \
+            lenguaje natural sin motivo aparente como cualquier otro humano"
+    verified = True
+    return gen(name, username, text, profileImg, date, verified, images=img)
